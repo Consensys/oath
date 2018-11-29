@@ -3,12 +3,13 @@ pragma experimental ABIEncoderV2;
 
 contract Oath {
     
+    uint256 WEI_PER_ETH = 10**18;
     //2**14
-    uint256 DEPOSITS_FOR_CHAIN_START = 16384;
-    uint256 DEPOSIT_SIZE = 32;
-    uint256 MIN_TOPUP_SIZE = 1;
+    uint256 DEPOSITS_FOR_CHAIN_START = 2**14;
+    uint256 DEPOSIT_SIZE = 32 * WEI_PER_ETH;
+    uint256 MIN_TOPUP_SIZE = 1 * WEI_PER_ETH;
     //10**9
-    uint256 GWEI_PER_ETH = 1000000000;
+    uint256 GWEI_PER_ETH = 10**9;
     uint256 POW_CONTRACT_MERKLE_TREE_DEPTH = 32;
     uint256 SECONDS_PER_DAY = 86400;
 
@@ -28,7 +29,9 @@ contract Oath {
         totalDepositCount++;
 
         if(totalDepositCount == DEPOSITS_FOR_CHAIN_START){
-            
+            uint256 timestampDayBoundary = block.timestamp - block.timestamp % SECONDS_PER_DAY + SECONDS_PER_DAY;
+            bytes[8] timestampDayBoundaryBytes;
+            emit ChainStart(receiptTree[1], timestampDayBoundaryBytes);
         }
     }
 
